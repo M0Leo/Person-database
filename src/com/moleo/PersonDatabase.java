@@ -22,14 +22,13 @@ public class PersonDatabase {
                 var d = Arrays.copyOfRange(lineArray,1, lineArray.length);
                 persons.put(lineArray[0], format.parse(String.join("/", d)));
             }
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        }catch (FileNotFoundException | ParseException e) {
             e.printStackTrace();
         } finally {
+            assert scan != null;
             scan.close();
         }
-    };
+    }
 
     public void displayAll() {
         System.out.println("/--------------Persons Table---------------/");
@@ -38,14 +37,7 @@ public class PersonDatabase {
             System.out.print(entry.getKey() + "\t");
             System.out.printf("%tF %n", entry.getValue());
         }
-    };
-
-    public void displayByName(String name) {
-        if (!persons.containsKey(name))
-            System.out.println("this name doesn't exist");
-        else
-            System.out.printf(name+ " "+ "%tF %n",persons.get(name));
-    };
+    }
 
     public void oldestPerson() {
         Optional<String> firstKey = persons.keySet().stream().findFirst();
@@ -59,14 +51,14 @@ public class PersonDatabase {
     }
 
     public void addPerson(String name, String date) throws ParseException  {
-        if (persons.containsKey(name))
+        if (persons.containsKey(name.toLowerCase()))
             System.out.println("This person is already exist.");
         Date formattedDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-        persons.put(name, formattedDate);
+        persons.put(name.toLowerCase(), formattedDate);
     }
 
     public void removePerson(String name) {
-        if (!persons.containsKey(name))
+        if (!persons.containsKey(name.toLowerCase()))
             System.out.println("Name doesn't exist.");
         persons.remove(name);
     }
