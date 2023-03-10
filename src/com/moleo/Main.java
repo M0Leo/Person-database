@@ -32,35 +32,27 @@ public class Main {
         do {
             System.out.println("Make another operation or exit[0]");
             op = read.nextInt();
-            String in;
-            switch (op) {
-                case 0:
-                    op = 0;
-                    break;
-                case 1:
-                    database.displayAll();
-                    break;
-                case 2:
-                    System.out.println("Enter name and date separated by a \"-\" ");
-                    in = read.next();
-                    if (!in.contains("-")) {
-                        throw new IllegalArgumentException("String " + in + " does not contain -");
-                    } else {
-                        String[] data = in.split("-");
-                        database.addPerson(data[0], data[1]);
-                    }
-                    break;
-                case 3:
-                    System.out.println("Enter the name:");
-                    in = read.nextLine();
-                    database.removePerson(in);
-                    break;
-                case 4:
-                    database.getUpComingBirthdays();
-                    break;
-                case 5:
-                    database.oldestPerson();
 
+            switch (op) {
+                case 0 -> op = 0;
+                case 1 -> database.displayAll();
+                case 2 -> {
+                    System.out.println("Enter name and date separated by a space");
+                    System.out.print("Name: ");
+                    String name = read.next();
+                    System.out.print("Date: ");
+                    String date = read.next();
+                    if (!name.isEmpty() || !date.isEmpty()) {
+                        database.addPerson(name, date);
+                    }
+                }
+                case 3 -> {
+                    System.out.println("Enter the name:");
+                    String name = read.next();
+                    database.removePerson(name);
+                }
+                case 4 -> database.getUpComingBirthdays();
+                case 5 -> database.oldestPerson();
             }
         } while (op != 0);
     }
